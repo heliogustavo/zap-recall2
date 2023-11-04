@@ -40,8 +40,6 @@ align-items: center;
 justify-content: center;
 padding-top: 50px;
 margin-bottom: 50px;
-
-
 img{
         width: 52px;
         height: 60px;
@@ -56,7 +54,6 @@ h1{
     text-align: center;
     color: #FFFFFF;
     display: flex;
-
    }
 `
 const ContainerPerguntas = styled.div`
@@ -68,7 +65,7 @@ display: inline-block;
 align-items: center;
 width: 100%;
 height: 567px;
-margin-left: 45px;
+margin-left: 35px;
 
 `
 

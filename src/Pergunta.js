@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import setaPlay from './img/seta_play.png'
 import setaVirar from './img/seta_virar.png'
+import certo from './img/icone_certo.png'
+import quase from './img/icone_quase.png'
+import erro from './img/icone_erro.png'
 
 
 export default function Pergunta() {
-    const [statusDeExibicao, setStatusDeExibicao] = useState ("estadoInicial");
+    const [statusDeExibicao, setStatusDeExibicao] = useState("estadoInicial");
+    const [iconeResposta, setIconeResposta] = useState(null);
     const perguntas = [
         {
             question: "O que é JSX??",
@@ -16,7 +20,7 @@ export default function Pergunta() {
             answer: "uma biblioteca JavaScript para construção de interfaces"
         },
         {
-            question: "Componentes devem iniciar com __",
+            question: "Componentes devem iniciar com ____",
             answer: "letra maiúscula"
         },
         {
@@ -40,8 +44,16 @@ export default function Pergunta() {
             answer: " dizer para o React quais informações quando atualizadas devem renderizar a tela novamente"
         }]
 
-    function mudarStatusDeExibicao() {
-
+    function exibirResposta(botaoClicado) {
+        if (botaoClicado === "erro") {
+            setIconeResposta("erro")
+        }
+        else if (botaoClicado === "quase") {
+            setIconeResposta("quase")
+        }
+        else {
+            setIconeResposta("certo")
+        }
     }
 
 
@@ -52,7 +64,7 @@ export default function Pergunta() {
                     return (
                         <BoxInicialPergunta key={index}>
                             <h3>Pergunta {index + 1}</h3>
-                            <img src={setaPlay} onClick={mudarStatusDeExibicao}></img>
+                            <img src={setaPlay} onClick={() => setStatusDeExibicao("mostrandoPergunta")}></img>
                         </BoxInicialPergunta >
                     )
                 }
@@ -60,8 +72,20 @@ export default function Pergunta() {
                     return (
                         <MostrarPergunta>
                             <p>{item.question}</p>
-                            <img src={setaVirar} onClick={mudarStatusDeExibicao}></img>
+                            <img src={setaVirar} onClick={() => setStatusDeExibicao("mostrandoResposta")}></img>
                         </MostrarPergunta>
+                    )
+                }
+                else if (statusDeExibicao === "mostrandoResposta") {
+                    return (
+                        <MostrarResposta>
+                            <p>{item.answer}</p>
+                            <CaixaDeBotoes>
+                                <BotaoVermelho onClick={() => exibirResposta("erro")}>Não Lembrei</BotaoVermelho>
+                                <BotaoAmarelo onClick={() => exibirResposta("quase")}>Quase Não Lembrei</BotaoAmarelo>
+                                <BotaoVerde onClick={() => exibirResposta("acerto")}>Zap!!</BotaoVerde>
+                            </CaixaDeBotoes>
+                        </MostrarResposta>
                     )
                 }
 
@@ -100,9 +124,15 @@ color:  #333333;
 }
 `
 const MostrarPergunta = styled.div`
+position: relative;
+display: flex;
+padding: 22px;
 width: 299px;
 height: 131px;
 border-radius: 5px;
+background-color: #FFFFD4;
+margin-bottom: 25px;
+
 
 p{
 font-family: Recursive;
@@ -112,7 +142,86 @@ line-height: 22px;
 letter-spacing: 0em;
 text-align: left;
 color: #333333;
-
+}
+img{
+position: absolute;
+width: 30px;
+height: 20px;
+right: 20px;
+bottom: 10px; 
 }
 
+`
+const MostrarResposta = styled.div`
+position: relative;
+display: flex;
+flex-direction: column;
+padding: 22px;
+width: 299px;
+height: 131px;
+border-radius: 5px;
+background-color: #FFFFD4;
+margin-bottom: 25px;
+
+p{
+font-family: Recursive;
+font-size: 18px;
+font-weight: 400;
+line-height: 22px;
+letter-spacing: 0em;
+text-align: left;
+color: #333333;
+}
+`
+const CaixaDeBotoes = styled.div`
+width: 100%;
+height: 90px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+padding-top: 15px;
+`
+const BotaoVerde = styled.button`
+width: 85.17px;
+height: 37.17px;
+border-radius: 5px;
+font-family: Recursive;
+font-size: 12px;
+font-weight: 400;
+line-height: 14px;
+letter-spacing: 0em;
+text-align: center;
+color: #FFFFFF;
+
+background-color: #2FBE34;
+
+`
+const BotaoAmarelo = styled.button`
+width: 85.17px;
+height: 37.17px;
+border-radius: 5px;
+font-family: Recursive;
+font-size: 12px;
+font-weight: 400;
+line-height: 14px;
+letter-spacing: 0em;
+text-align: center;
+color: #FFFFFF;
+
+background-color: #FF922E;
+
+`
+const BotaoVermelho = styled.button`
+width: 85.17px;
+height: 37.17px;
+border-radius: 5px;
+font-family: Recursive;
+font-size: 12px;
+font-weight: 400;
+line-height: 14px;
+letter-spacing: 0em;
+text-align: center;
+color: #FFFFFF;
+
+background-color: #FF3030;
 `
