@@ -6,95 +6,76 @@ import certo from './img/icone_certo.png'
 import quase from './img/icone_quase.png'
 import erro from './img/icone_erro.png'
 
-
-export default function Pergunta() {
+export default function Pergunta(props) {
     const [statusDeExibicao, setStatusDeExibicao] = useState("estadoInicial");
     const [iconeResposta, setIconeResposta] = useState(null);
-    const perguntas = [
-        {
-            question: "O que é JSX??",
-            answer: "Uma extensão de linguagem do JavaScript"
-        },
-        {
-            question: "O React é __",
-            answer: "uma biblioteca JavaScript para construção de interfaces"
-        },
-        {
-            question: "Componentes devem iniciar com ____",
-            answer: "letra maiúscula"
-        },
-        {
-            question: "Podemos colocar __ dentro do JSX",
-            answer: "expressões"
-        },
-        {
-            question: "O ReactDOM nos ajuda __",
-            answer: "interagindo com a DOM para colocar componentes React na mesma"
-        },
-        {
-            question: "Usamos o npm para __ ",
-            answer: "gerenciar os pacotes necessários e suas dependências"
-        },
-        {
-            question: "Usamos props para __",
-            answer: "passar diferentes informações para componentes"
-        },
-        {
-            question: "Usamos estado (state) para __",
-            answer: " dizer para o React quais informações quando atualizadas devem renderizar a tela novamente"
-        }]
-
+    const [finalizado, setFinalizado] =useState (false)
+    const [corfinal, setCorfinal] = useState ("")
+    
+    
     function exibirResposta(botaoClicado) {
         if (botaoClicado === "erro") {
-            setIconeResposta("erro")
+            setIconeResposta(erro)
+            props.setContadorDeConclusao (props.contadorDeConclusao +1)
+            setStatusDeExibicao("erro")
+            setFinalizado("true")
+            setCorfinal('#FF3030')
         }
-        else if (botaoClicado === "quase") {
-            setIconeResposta("quase")
+        else if (botaoClicado == "quase") {
+            setIconeResposta(quase)
+            props.setContadorDeConclusao (props.contadorDeConclusao +1)
+            setStatusDeExibicao("quase")
+            setFinalizado("true")
+            setCorfinal('#FF922E')
         }
         else {
-            setIconeResposta("certo")
+            setIconeResposta(certo)
+            props.setContadorDeConclusao (props.contadorDeConclusao +1)
+            setStatusDeExibicao("certo")
+            setFinalizado("true")
+            setCorfinal('#2FBE34')
+
         }
+        console.log(props.contadorDeConclusao)
     }
-
-
+    if (statusDeExibicao === "estadoInicial") {
+        return (
+            <BoxInicialPergunta key={props.index}>
+                <h3>Pergunta {props.index + 1}</h3>
+                <img src={setaPlay} onClick={() => setStatusDeExibicao("mostrandoPergunta")}></img>
+            </BoxInicialPergunta >
+        )
+    }
+    else if (statusDeExibicao === "mostrandoPergunta") {
+        return (
+            <MostrarPergunta key={props.index}>
+                <p>{props.question}</p>
+                <img src={setaVirar} onClick={() => setStatusDeExibicao("mostrandoResposta")}></img>
+            </MostrarPergunta>
+        )
+    }
+    else if (statusDeExibicao === "mostrandoResposta") {
+        return (
+            <MostrarResposta key={props.index}>
+                <p>{props.answer}</p>
+                <CaixaDeBotoes>
+                    <BotaoVermelho onClick={() => exibirResposta("erro")}>Não Lembrei</BotaoVermelho>
+                    <BotaoAmarelo onClick={() => exibirResposta("quase")}>Quase Não Lembrei</BotaoAmarelo>
+                    <BotaoVerde onClick={() => exibirResposta("acerto")}>Zap!!</BotaoVerde>
+                </CaixaDeBotoes>
+            </MostrarResposta>
+        )
+    }
+    else{
     return (
-        <>
-            {perguntas.map((item, index) => {
-                if (statusDeExibicao === "estadoInicial") {
-                    return (
-                        <BoxInicialPergunta key={index}>
-                            <h3>Pergunta {index + 1}</h3>
-                            <img src={setaPlay} onClick={() => setStatusDeExibicao("mostrandoPergunta")}></img>
-                        </BoxInicialPergunta >
-                    )
-                }
-                else if (statusDeExibicao === "mostrandoPergunta") {
-                    return (
-                        <MostrarPergunta>
-                            <p>{item.question}</p>
-                            <img src={setaVirar} onClick={() => setStatusDeExibicao("mostrandoResposta")}></img>
-                        </MostrarPergunta>
-                    )
-                }
-                else if (statusDeExibicao === "mostrandoResposta") {
-                    return (
-                        <MostrarResposta>
-                            <p>{item.answer}</p>
-                            <CaixaDeBotoes>
-                                <BotaoVermelho onClick={() => exibirResposta("erro")}>Não Lembrei</BotaoVermelho>
-                                <BotaoAmarelo onClick={() => exibirResposta("quase")}>Quase Não Lembrei</BotaoAmarelo>
-                                <BotaoVerde onClick={() => exibirResposta("acerto")}>Zap!!</BotaoVerde>
-                            </CaixaDeBotoes>
-                        </MostrarResposta>
-                    )
-                }
-
-            }
-            )}
-        </>
+        <BoxInicialPergunta key={props.index} finalizado={finalizado} corfinal={corfinal}>
+        <h3>Pergunta {props.index + 1}</h3>
+        <img src={iconeResposta} ></img>
+    </BoxInicialPergunta >
     )
+    }
 }
-
+ <Pergunta/>
 
 
 const BoxInicialPergunta = styled.div`
@@ -119,7 +100,8 @@ font-weight: 700;
 line-height: 19px;
 letter-spacing: 0em;
 text-align: left;   
-color:  #333333;
+text-decoration: ${(props)=>props.finalizado ? 'line-through' : ''};
+color:  ${(props)=>props.finalizado ? props.corfinal : '#333333'};
 
 }
 `
