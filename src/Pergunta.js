@@ -40,28 +40,28 @@ export default function Pergunta(props) {
     }
     if (statusDeExibicao === "estadoInicial") {
         return (
-            <BoxInicialPergunta key={props.index}>
-                <h3>Pergunta {props.index + 1}</h3>
-                <img src={setaPlay} onClick={() => setStatusDeExibicao("mostrandoPergunta")}></img>
+            <BoxInicialPergunta key={props.index} data-test="flashcard">
+                <h3 data-test="flashcard-text">Pergunta {props.index + 1}</h3>
+                <img src={setaPlay} onClick={() => setStatusDeExibicao("mostrandoPergunta")} data-test="play-btn"></img>
             </BoxInicialPergunta >
         )
     }
     else if (statusDeExibicao === "mostrandoPergunta") {
         return (
             <MostrarPergunta key={props.index}>
-                <p>{props.question}</p>
-                <img src={setaVirar} onClick={() => setStatusDeExibicao("mostrandoResposta")}></img>
+                <p data-test="flashcard-text">{props.question}</p>
+                <img src={setaVirar} onClick={() => setStatusDeExibicao("mostrandoResposta") } data-test="turn-btn"></img>
             </MostrarPergunta>
         )
     }
     else if (statusDeExibicao === "mostrandoResposta") {
         return (
             <MostrarResposta key={props.index}>
-                <p>{props.answer}</p>
+                <p data-test="flashcard-text">{props.answer}</p>
                 <CaixaDeBotoes>
-                    <BotaoVermelho onClick={() => exibirResposta("erro")}>Não Lembrei</BotaoVermelho>
-                    <BotaoAmarelo onClick={() => exibirResposta("quase")}>Quase Não Lembrei</BotaoAmarelo>
-                    <BotaoVerde onClick={() => exibirResposta("acerto")}>Zap!!</BotaoVerde>
+                    <BotaoVermelho onClick={() => exibirResposta("erro")} data-test="no-btn">Não Lembrei</BotaoVermelho>
+                    <BotaoAmarelo onClick={() => exibirResposta("quase")} data-test="partial-btn">Quase Não Lembrei</BotaoAmarelo>
+                    <BotaoVerde onClick={() => exibirResposta("acerto")} data-test="zap-btn">Zap!!</BotaoVerde>
                 </CaixaDeBotoes>
             </MostrarResposta>
         )
@@ -69,8 +69,8 @@ export default function Pergunta(props) {
     else{
     return (
         <BoxInicialPergunta key={props.index} finalizado={finalizado} corfinal={corfinal}>
-        <h3>Pergunta {props.index + 1}</h3>
-        <img src={iconeResposta} ></img>
+        <h3 data-test="flashcard-text">Pergunta {props.index + 1}</h3>
+        <img src={iconeResposta} data-test="no-icon"></img>
     </BoxInicialPergunta >
     )
     }
